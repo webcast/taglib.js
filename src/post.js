@@ -142,6 +142,8 @@ if (typeof window != "undefined") {
       return syncTaglibRead(this, format, cb);
     }
   };
+} else {
+  self.readFile = readFile;
 }
 
 }).call(context)})();
