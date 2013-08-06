@@ -1,0 +1,17 @@
+<script src="taglib.js"></script>
+<script>
+  function init() {
+    document.getElementById("go").onclick = function () {
+      file = document.getElementById("file").files[0];
+      file.readTaglibMetadata(function (data) {
+        document.getElementById("log").innerHTML = JSON.stringify(data, null, 2);
+      });
+    };
+  }
+
+  window.addEventListener("load", init, false);
+</script>
+<input type="file" id="file" accept="audio/*"><br>
+<button id="go">Read file</button><br>
+Taglib Data:<br>
+<pre id="log"></pre>
