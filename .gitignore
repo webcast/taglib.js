@@ -1,6 +1,6 @@
 taglib-*
 *.o
-*.obj
+*.cpp.o
 .*.sw*
 build
 stamp-taglib-build

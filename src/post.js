@@ -1,4 +1,4 @@
-// libsamplerate function wrappers
+// taglib function wrappers
 
 files = {}
 

@@ -8,11 +8,13 @@ LINKFLAGS:=-s EXPORTED_FUNCTIONS=$(EXPORTED_FUNCTIONS) $(CXXFLAGS)
 EMMAKE:=emmake
 TAGLIB_URL:="http://taglib.github.io/releases/taglib-1.8.tar.gz"
 TAR:=tar
+# Beurk!
+INCLUDE_DIRS=$(shell find taglib-1.8/taglib | grep '\.h$$' | while read i; do dirname $$i; done | sort -u)
 
 all: dist/taglib.js
 
-dist/taglib.js: $(TAGLIB) src/wrapper.obj src/pre.js src/post.js src/library.js
-	$(EMCXX) $(LINKFLAGS) --pre-js src/pre.js --post-js src/post.js --js-library src/library.js $(shell find build/taglib -name '*.obj') src/wrapper.obj -o $@
+dist/taglib.js: $(TAGLIB) src/wrapper.cpp.o src/pre.js src/post.js src/library.js
+	$(EMCXX) $(LINKFLAGS) --pre-js src/pre.js --post-js src/post.js --js-library src/library.js $(shell find build/taglib -name '*.cpp.o') src/wrapper.cpp.o -o $@
 
 $(TAGLIB): $(TAGLIB).tar.gz stamp-taglib-build
 
@@ -30,10 +32,10 @@ $(TAGLIB).tar.gz:
 	test -e "$@" || wget $(TAGLIB_URL)
 
 clean:
-	$(RM) -rf $(TAGLIB) stamp-taglib-build
+	$(RM) -rf $(TAGLIB) src/wrapper.cpp.o stamp-taglib-build
 
-src/wrapper.obj: src/wrapper.cpp
-	$(EMCXX) $(CXXFLAGS) -Ibuild/taglib/Headers -c $< -o $@
+src/wrapper.cpp.o: src/wrapper.cpp
+	$(EMCXX) $(CXXFLAGS) -Ibuild $(INCLUDE_DIRS:%=-I%) -c $< -o $@
 
 distclean: clean
 	$(RM) $(TAGLIB).tar.gz
