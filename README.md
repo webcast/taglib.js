@@ -111,4 +111,5 @@ Andreas Krennmair <ak@synflood.at>
 License
 -------
 
-taglib.js is published under the license terms as samplerate.
+taglib.js is published under the license terms as taglib, i.e. is the
+GNU Lesser General Public License.
