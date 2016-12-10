@@ -3,8 +3,8 @@ TAGLIB:=taglib-$(TAGLIB_VERSION)
 
 EMCXX:=em++
 EXPORTED_FUNCTIONS:='["_taglib_js_open", "_taglib_js_close", "_taglib_js_get_metadata", "_taglib_js_get_audio_properties"]'
-CXXFLAGS:=-O3 --memory-init-file 0
-LINKFLAGS:=-s EXPORTED_FUNCTIONS=$(EXPORTED_FUNCTIONS) $(CXXFLAGS)
+CXXFLAGS:=-O3
+LINKFLAGS:=-s EXPORTED_FUNCTIONS=$(EXPORTED_FUNCTIONS) --memory-init-file 0 $(CXXFLAGS)
 EMMAKE:=emmake
 TAGLIB_URL:="http://taglib.github.io/releases/$(TAGLIB).tar.gz"
 TAR:=tar
