@@ -21,4 +21,4 @@ set(CMAKE_CXX_COMPILER "${EMSCRIPTEN_ROOT_PATH}/em++")
 set(CMAKE_AR "${EMSCRIPTEN_ROOT_PATH}/emar")
 set(CMAKE_RANLIB "${EMSCRIPTEN_ROOT_PATH}/emranlib")
 
-include(${EMSCRIPTEN_ROOT_PATH}/cmake/Platform/Emscripten.cmake)
+include(${EMSCRIPTEN_ROOT_PATH}/cmake/Modules/Platform/Emscripten.cmake)

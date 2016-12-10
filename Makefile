@@ -1,15 +1,15 @@
-TAGLIB_VERSION:=1.8
+TAGLIB_VERSION:=1.11.1
 TAGLIB:=taglib-$(TAGLIB_VERSION)
 
 EMCXX:=em++
 EXPORTED_FUNCTIONS:='["_taglib_js_open", "_taglib_js_close", "_taglib_js_get_metadata", "_taglib_js_get_audio_properties"]'
-CXXFLAGS:=-O2 -s ASM_JS=1 -s USE_TYPED_ARRAYS=2
+CXXFLAGS:=-O3 --memory-init-file 0
 LINKFLAGS:=-s EXPORTED_FUNCTIONS=$(EXPORTED_FUNCTIONS) $(CXXFLAGS)
 EMMAKE:=emmake
-TAGLIB_URL:="http://taglib.github.io/releases/taglib-1.8.tar.gz"
+TAGLIB_URL:="http://taglib.github.io/releases/$(TAGLIB).tar.gz"
 TAR:=tar
 # Beurk!
-INCLUDE_DIRS=$(shell find taglib-1.8/taglib | grep '\.h$$' | while read i; do dirname $$i; done | sort -u)
+INCLUDE_DIRS=$(shell find $(TAGLIB)/taglib | grep '\.h$$' | while read i; do dirname $$i; done | sort -u)
 
 all: dist/taglib.js
 
@@ -20,7 +20,9 @@ $(TAGLIB): $(TAGLIB).tar.gz stamp-taglib-build
 
 stamp-taglib-build:
 	$(TAR) xzvf $(TAGLIB).tar.gz && \
-	patch -p0 < src/emscripten-build.patch && \
+	cd $(TAGLIB) && \
+	patch -p1 < ../src/emscripten-build.patch && \
+	cd .. && \
 	rm -rf build && \
 	mkdir -p build && \
 	cd build && \
@@ -32,7 +34,7 @@ $(TAGLIB).tar.gz:
 	test -e "$@" || wget $(TAGLIB_URL)
 
 clean:
-	$(RM) -rf $(TAGLIB) src/wrapper.cpp.o stamp-taglib-build
+	$(RM) -rf build $(TAGLIB)* src/wrapper.cpp.o stamp-taglib-build
 
 src/wrapper.cpp.o: src/wrapper.cpp
 	$(EMCXX) $(CXXFLAGS) -Ibuild $(INCLUDE_DIRS:%=-I%) -c $< -o $@
